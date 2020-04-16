@@ -67,11 +67,11 @@ jobs:
         ./scripts/feeds install -a
         ./scripts/feeds install -a
         
-    #- name: Import external feeds
-    #  working-directory: ./openwrt
-    #  run: |
+    - name: Import external feeds
+      working-directory: ./openwrt
+      run: |
     #    git clone https://github.com/Lienol/openwrt-package package/lienol
-    #    git clone https://github.com/fw876/helloworld.git package/openwrt-package      
+        git clone https://github.com/fw876/helloworld.git package/openwrt-package      
       
     - name: Configuration Customization
       env:
