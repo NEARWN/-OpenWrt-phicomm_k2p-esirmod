@@ -70,7 +70,6 @@ jobs:
     - name: Import external feeds
       working-directory: ./openwrt
       run: |
-    #    git clone https://github.com/Lienol/openwrt-package package/lienol
         git clone https://github.com/fw876/helloworld.git package/openwrt-package      
       
     - name: Configuration Customization
