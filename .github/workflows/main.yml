@@ -7,7 +7,7 @@
 # <https://github.com/KFERMercer/OpenWrt-CI>
 # 
 
-name: OpenWrt Build firmware k2p
+name: openwrt firmware k2p
 
 on:
   schedule:
@@ -58,19 +58,22 @@ jobs:
       env: 
         REPO_URL: https://github.com/coolsnowwolf/lede
         REPO_BRANCH: master
-      run: |
-        git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
-        cd openwrt
-        sed -i '5s/#//' feeds.conf.default
+      run: git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
+
     - name: Update & Install feeds
       working-directory: ./openwrt
       run: |
         ./scripts/feeds update -a
         ./scripts/feeds install -a
-        ./scripts/feeds install -a
-    - name: Configuration Customization - Build_Redmi_AC2100
+        ./scripts/feeds install -a     
+    - name: Import external feeds
+      working-directory: ./openwrt
+      run: |
+        git clone https://github.com/fw876/helloworld.git package/openwrt-package
+      
+    - name: Configuration Customization k2p
       env:
-        CONFIG_FILE: 'redmi_ac2100.config'
+        CONFIG_FILE: 'k2p.config'
       run: |
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
         chmod +x ./customize.sh && ./customize.sh
@@ -82,51 +85,6 @@ jobs:
         make download -j$(nproc)
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
-    - name: Build firmware
-      working-directory: ./openwrt
-      run: |
-        echo -e "$(nproc) thread build."
-        make -j$(nproc) V=s
-    - name : Upload artifact
-      uses: actions/upload-artifact@master
-      with:
-        name: OpenWrt
-        path: openwrt/bin
-
-        sudo -E apt-get -y autoremove --purge
-        sudo -E apt-get clean
-        
-    - name: Clone source code
-      env: 
-        REPO_URL: https://github.com/coolsnowwolf/lede
-        REPO_BRANCH: master
-      run: git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
-
-    - name: Update & Install feeds
-      working-directory: ./openwrt
-      run: |
-        ./scripts/feeds update -a
-        ./scripts/feeds install -a
-        ./scripts/feeds install -a
-        
-    - name: Import external feeds
-      working-directory: ./openwrt
-      run: |
-        git clone https://github.com/fw876/helloworld.git package/openwrt-package      
-      
-    - name: Configuration Customization
-      env:
-        CONFIG_FILE: 'k2p.config'
-      run: |
-        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-        cd openwrt && make defconfig
-        
-    - name: Download package
-      working-directory: ./openwrt
-      run: |
-        make download -j$(nproc)
-        find dl -size -1024c -exec ls -l {} \;
-        find dl -size -1024c -exec rm -f {} \;
         
     - name: Build firmware
       working-directory: ./openwrt
@@ -137,5 +95,5 @@ jobs:
     - name : Upload artifact
       uses: actions/upload-artifact@master
       with:
-        name: OpenWrt Build firmware k2p my
+        name: OpenWrt firmware k2p esirmod
         path: openwrt/bin
