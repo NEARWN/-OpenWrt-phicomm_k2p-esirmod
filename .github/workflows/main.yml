@@ -5,7 +5,7 @@
 # Youtube Channel: https://goo.gl/fvkdwm 
 #=================================================
 
-name: Build_k2p
+name: Build OpenWrt phicomm k2p
 
 on: 
   release:
@@ -79,7 +79,7 @@ jobs:
     #    git clone https://github.com/xiaorouji/openwrt-package.git package/lienol
     #    git clone "your_github_link" package/"your_folder_name"      
 
-    - name: Configuration Customization - Build_x86_64
+    - name: Configuration Customization - phicomm k2p
       env:
         CONFIG_FILE: 'k2p.config'
       run: |
