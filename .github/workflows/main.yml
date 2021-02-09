@@ -5,7 +5,7 @@
 # Youtube Channel: https://goo.gl/fvkdwm 
 #=================================================
 
-name: Build phicomm k2p
+name: Build_k2p
 
 on: 
   release:
@@ -72,13 +72,14 @@ jobs:
         ./scripts/feeds update -a
         ./scripts/feeds install -a
         ./scripts/feeds install -a
+        
     #- name: Import external feeds
     #  working-directory: ./openwrt
     #  run: |
     #    git clone https://github.com/xiaorouji/openwrt-package.git package/lienol
     #    git clone "your_github_link" package/"your_folder_name"      
 
-    - name: Configuration Customization - phicomm k2p
+    - name: Configuration Customization - Build_x86_64
       env:
         CONFIG_FILE: 'k2p.config'
       run: |
@@ -102,5 +103,5 @@ jobs:
     - name : Upload artifact
       uses: actions/upload-artifact@master
       with:
-        name: OpenWrt phicomm k2p
+        name: OpenWrt phicomm k2p${{ env.FILE_DATE }}
         path: openwrt/bin
