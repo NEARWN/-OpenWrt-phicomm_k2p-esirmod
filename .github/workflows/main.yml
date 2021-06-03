@@ -103,5 +103,5 @@ jobs:
     - name : Upload artifact
       uses: actions/upload-artifact@master
       with:
-        name: OpenWrt phicomm k2p${{ env.FILE_DATE }}
+        name: OpenWrt phicomm k2p
         path: openwrt/bin
